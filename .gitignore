@@ -1,0 +1,7 @@
+application/cache/*
+application/logs/*
+application/views/motyw_new copy.php
+pliki/*
+bazasql.sql
+baza_sql.zip
+backup_sql/*

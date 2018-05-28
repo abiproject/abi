@@ -1,0 +1,36 @@
+.odd {
+	background-color: #f9f9f9;
+}
+.footer {
+  text-align: right;
+  margin-top: 10px;
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+#okMsg{ 
+	background: #c8ffbf; 
+	border: 1px solid #a2ef95; 
+	margin: 0 0 1.5em 0; 
+	padding: 1em 1.5em;
+   border-radius:         4px;
+   -webkit-border-radius: 4px;
+   -moz-border-radius:    4px;
+   -o-border-radius:      4px;
+   -khtml-border-radius:  4px;
+}
+
+#errorMsg{ 
+	background: #ffdfdf;
+	border: 1px solid #f3afb5; 
+	margin: 0 0 1.5em 0;
+	padding: 1em 1.5em;
+   border-radius:         4px;
+   -webkit-border-radius: 4px;
+   -moz-border-radius:    4px;
+   -o-border-radius:      4px;
+   -khtml-border-radius:  4px;
+}
