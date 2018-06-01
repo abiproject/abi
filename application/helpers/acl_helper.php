@@ -53,7 +53,7 @@ function check_perm($id,$acl,$oczwkiwany_acl=0)
 
 }
 
-function menu_acl($id)
+function menu_acl($id, $nr=0)
 {
 	include("./application/config/config.php");
 	$ci =& get_instance();
@@ -68,18 +68,23 @@ function menu_acl($id)
 		foreach($q->result() as $row)
 		{
 			$menu["acl"][$row->acl] = $row->access_rw;
-			$i = $i + $row->access_rw;		
+			$i += $row->access_rw;		
 		}
 	}	
 	$s0=crypt(md5($i).$id,$config[base64_decode('ZW5jcnlwdGlvbl9rZXk=')]);
+	if($nr!=0){
+		return $s0;
+	}
+	
 	$ci->db->where(base64_decode('aWQ='),$id);
 	$p6=$ci->db->get(base64_decode('dXNlcnM='));
 	$i7=$p6->row();
+//to jest ten durny błąd z db injection!!!
 	if($s0!=$i7->acl){
 		die(base64_decode('PHN0cm9uZz5GYXRhbCBFcnJvcjo8L3N0cm9uZz4gREIgSW5qZWN0aW9uIFNlY3VyaXR5IEluY2lkZW50IQ=='));
 	}
 	
 	$ci->db->cache_on();
-	return @$menu;
+		return @$menu;
 }
 ?>

@@ -9,15 +9,6 @@
 			<!-- <th style="text-align:center">json</th> -->
         </tr>
     </thead><tbody></tbody>
-    <tfooter>
-        <tr>
-			<th style="text-align:center">Data</th>
-			<th style="text-align:center">Użytkownik</th>
-			<th style="text-align:center">Akcja</th>
-         <th style="text-align:center">Parametry</th>
-         <!-- <th style="text-align:center">json</th> -->
-        </tr>
-    </tfooter>
 </table>
   <style media="all" type="text/css">
       .alignRight { text-align: right; }

@@ -38,6 +38,7 @@ public function pdf()
 				else
 					$html = $this->load->view("pdf/pdf_upowaznienie",$data,true);				
 				$pdf->writeHTML($html, true, false, true, false, '');
+				ob_end_clean();
 				$pdf->Output('UPO_'.convert_accented_characters($data["nazwiskoimie"]).'.pdf', 'D'); 
 				}
 				else
@@ -69,9 +70,9 @@ public function pdf_abi()
 					else
 				$html = $this->load->view("pdf/pdf_zgloszenie_abi",$data,true);				
 				$pdf->writeHTML($html, true, false, true, false, '');
+				ob_end_clean();
 				$pdf->Output('ABI.pdf', 'D'); 
-				//$pdf->Output('UPO_'.convert_accented_characters($data["nazwiskoimie"]).'.pdf', 'D'); 
-				//$this->output->enable_profiler(TRUE);
+				
 			}
 			else
 				die("Brak dostepu!");

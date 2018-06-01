@@ -31,6 +31,11 @@
 						<input class="form-control" type="checkbox" name="sortid" value="tak" <?php echo (@$sortid != null) ? set_checkbox('sortid','tak', TRUE) : set_checkbox('sortid','nie'); ?>> sortowanie po nr
 						</label>
 						  </div>
+						  <div class="checkbox">
+							 <label>
+						<input class="form-control" type="checkbox" name="puste" value="tak" <?php echo (@$puste != null) ? set_checkbox('puste','tak', TRUE) : set_checkbox('puste','nie'); ?>> pokaż puste
+						</label>
+						  </div>
 					</div>
 				       <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span> Wyszukaj</button>
 				    </fieldset>

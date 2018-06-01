@@ -50,7 +50,7 @@
 	<?php $start = $i + 1; break;?>
 			<? else:?>
 	[day(<?= $i;?>), 0],
-		<?php endif;?>
+		<? endif;?>
 		<?php endfor;?>
 	<?php endforeach;?>
 	<? if($row["dzien"] < date("d")):?>
@@ -68,7 +68,7 @@
 	<?php $start = $i + 1; break;?>
 			<? else:?>
 	[day(<?= $i;?>), 0],
-		<?php endif;?>
+		<? endif;?>
 		<?php endfor;?>
 	<?php endforeach;?>
 	<? if($row["dzien"] < date("d")):?>

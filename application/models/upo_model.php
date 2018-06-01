@@ -55,6 +55,40 @@ function upo_by_id($uid,$zaklad)
 			
 			return $this->db->get();
 		}
+
+
+
+function upo_puste($zaklad, $od,$ile)
+{
+
+		$this->db->cache_off();
+		$this->db->select("upowaznienia.id as uid,nazwa_zakladu,nr");
+		$this->db->from("upowaznienia");
+		$this->db->join("zaklady","zaklady.id = upowaznienia.id_zaklad","left outer");
+			$this->db->where('id_prac',0);
+		if($zaklad > 0)
+			$this->db->where("upowaznienia.id_zaklad",$zaklad);
+		$this->db->group_by("uid");
+		$this->db->limit($ile,$od);	
+		return $this->db->get();
+
+}	
+
+function suma_puste($zaklad)
+{
+
+		$this->db->cache_off();
+		$this->db->select("upowaznienia.id as uid,nazwa_zakladu,nr");
+		$this->db->from("upowaznienia");
+		$this->db->join("zaklady","zaklady.id = upowaznienia.id_zaklad","left outer");
+		$this->db->where('id_prac',0);
+		if($zaklad > 0)
+			$this->db->where("upowaznienia.id_zaklad",$zaklad);
+		return $this->db->count_all_results();
+
+}
+
+
 		
 function upo_nazwisko($nazwisko,$zaklad,$typ,$od,$ile,$wygasajace=NULL)
 	{
@@ -70,8 +104,6 @@ function upo_nazwisko($nazwisko,$zaklad,$typ,$od,$ile,$wygasajace=NULL)
 		$this->db->like("nazwiskoimie",$nazwisko);
 		if($zaklad > 0)
 			$this->db->where("upowaznienia.id_zaklad",$zaklad);
-		// else
-// 			$this->db->order_by("data_do","DESC");
 		if(@$typ["aktualne"] == 1)
 			$this->db->where("data_do >","NOW()",false);
 		if($wygasajace !== NULL)
@@ -113,7 +145,38 @@ function suma_upo_nazwisko($nazwisko,$zaklad,$typ,$stat=NULL)
 		return $this->db->count_all_results();
 	}
 
+	
+	
+function upo_edytuj_spr($uid,$zaklad)
+
+	{
+		$this->db->select("upowaznienia.id as uid, id_prac");
+		$this->db->from("upowaznienia");
+		$this->db->where("upowaznienia.id",$uid);
+		if($zaklad > 0)
+			$this->db->where("upowaznienia.id_zaklad",$this->session->userdata("zaklad"));
+		return $this->db->get();
+	}
+
+	
+	
+	
+function upo_edytuj_puste($uid,$zaklad)
+
+	{
+		$this->db->select("upowaznienia.id as uid, nr, id_zaklad");
+		$this->db->from("upowaznienia");
+		$this->db->where("upowaznienia.id",$uid);
+		if($zaklad > 0)
+			$this->db->where("upowaznienia.id_zaklad",$this->session->userdata("zaklad"));
+		return $this->db->get();
+	}	
+	
+	
+	
+	
 function upo_edytuj($uid,$zaklad)
+
 	{
 		$this->db->select("upowaznienia.id as uid, data_od, data_do, id_prac,nr,slowniki_miejsca.nazwa as miejsce");
 		$this->db->from("upowaznienia,slowniki_miejsca");
@@ -224,9 +287,9 @@ function upo_zapisz($id_upo,$id_prac,$od,$do,$id_miejsce)
 	$wpis_baza = array(
 		'data_od' => $od,
 		'data_do' => $do,
-		'id_miejsce' => $id_miejsce);
-	$this->db->where("id",$id_upo);
-	$this->db->where("id_prac",$id_prac);							
+		'id_miejsce' => $id_miejsce,
+		'id_prac' => $id_prac);
+	$this->db->where("id",$id_upo);							
 	$this->db->update("upowaznienia",$wpis_baza);
 	
 	$tab = $this->Pracownicy_model->pobierz_tab_pracownika($id_prac);
@@ -259,30 +322,6 @@ function przedluz_upo($id_upo)
 	$this->db->cache_delete("admin","index");		
 }
 
-function usun_upo($id)
-{
-	$id_q 	= $this->upo_pobierz($id);
-	$row  	= $id_q->row();
-	$id_prac = $row->id_prac;
-	
-	$tab = $this->Pracownicy_model->pobierz_tab_pracownika($id_prac);
-	
-	// $this->db->where("id",$id);
-	// $this->db->delete("upowaznienia");
-	
-	// $this->db->where("id_upo",$id);
-	// $this->db->delete("upowaznienia_systemy");
-	
-	// $this->db->where("id_upo",$id);
-	// $this->db->delete("upowaznienia_zbiory");	
-	zapisz_log($this->session->userdata("id"),6,"Id: ".$id." / ".$tab["nazwa"]." / ".$tab["zaklad"]."");
-	
-	$this->db->cache_delete("admin","upo");
-	$this->db->cache_delete("admin","upo_edytuj");
-	$this->db->cache_delete('rejestry','upowaznienia');
-	$this->db->cache_delete('export','pdf');
-	$this->db->cache_delete("admin","index");			
-}
 function cofnij_upo($id,$data)
 {
 	$id_q = $this->upo_pobierz($id);

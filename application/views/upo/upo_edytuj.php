@@ -1,4 +1,4 @@
-<h2>Edycja upoważnienia: <u><?php echo $nazwisko_imie." (nr: ".$row['nr'].")";?></u></h2>
+<h2>Edycja upoważnienia: <u><?php if(isset($nazwisko_imie)) {echo $nazwisko_imie;} echo "(nr: ".$row['nr'].")";?></u></h2>
 <?php 
 $atr = array(
 	"class" => "form-horizontal",
@@ -11,40 +11,38 @@ echo form_open('admin/upo_edytuj/'.$uid,$atr,$hid); ?>
 <div class="form-group">
 	<label for="data_od" class="col-sm-2 control-label">Data od</label>
 	<div class="col-sm-6">
-	<input class="form-control" name="od" AUTOCOMPLETE=OFF type="text" id="datepicker" placeholder="Od" value="<?php echo $row["data_od"];?>">
+	<input class="form-control" name="od" AUTOCOMPLETE=OFF type="text" id="datepicker" placeholder="Od" value="<?php if(isset($row["data_od"])) echo $row["data_od"];?>">
 	</div>
 </div>
 <div class="form-group">
 	<label for="data_do" class="col-sm-2 control-label">Data do</label>
 	<div class="col-sm-6">
-	<input class="form-control" name="do" AUTOCOMPLETE=OFF type="text" id="datepicker2" placeholder="Do" value="<?php echo $row["data_do"];?>">
+	<input class="form-control" name="do" AUTOCOMPLETE=OFF type="text" id="datepicker2" placeholder="Do" value="<?php if(isset($row["data_do"])) echo $row["data_do"];?>">
 	</div>
 </div>
 <div class="form-group">
 	<label for="pracownik" class="col-sm-2 control-label">Pracownik</label>						
 		<div class="col-sm-6">
 	<select class="form-control" id="name" name="pracownik">
-		<option value='<?php echo $id_prac;?>'><?php echo $nazwisko_imie.' [id: '.$id_prac.']';?></option>
+		<option value='<?php if(isset($id_prac)) echo $id_prac;?>'><?php if(isset($nazwisko_imie))echo $nazwisko_imie.' [id: '.$id_prac.']';?></option>
+		
+		<?php $i=0; foreach($pracownicy_w as $item){ if($pracownicy_w[$i]["pid"] !=$id_prac){?>
+		<option value='<?php echo $pracownicy_w[$i]["pid"];?>'><?php echo $pracownicy_w[$i]["nazwiskoimie"]." [id: ".$pracownicy_w[$i]['pid']."]";?></option>
+		<?php }$i++;}?>
+		
 	</select>
 	</div>
 </div>
 <div class="form-group has-feedback">
 <label for="miejsce" class="col-sm-2 control-label">Komórka organizacyjna</label>
-				<script>
-				  $(function() {
-				   var availableTags = [
-<?php foreach ($komorki as $item):?>
-{ label: '<?php echo $item["nazwa"];?>'},
-<?php endforeach;?>
-];
-				    $( "#tags" ).autocomplete({
-				      source: availableTags
-				    });
-				  });
-				  </script>
-				  <div class="col-sm-6">
-<input name="miejsce" class="form-control" type="text" id="tags" placeholder="Komórka organizacyjna..." value="<?php echo $row["miejsce"];?>"><i class="glyphicon glyphicon-chevron-down form-control-feedback"></i>
-</div>
+	<div class="col-sm-6">
+	<select class="form-control" id="tags" name="miejsce" placeholder="Komórka organizacyjna..."  >
+	<option value="<?php if(isset($row["miejsce"])) echo $row["miejsce"];?>"><?php if(isset($row["miejsce"])) echo $row["miejsce"];?></option>
+	<?php foreach ($komorki as $item){ if ($item["nazwa"] != $row["miejsce"]){?>
+		<option value='<?php echo $item["nazwa"];?>'><?php echo $item["nazwa"];?></option>
+	<?php }}?>
+	</select>
+	</div>	
 </div>
 <h3>Dostęp:</h3>
 <div class="col-sm-8">

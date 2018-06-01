@@ -10,9 +10,9 @@
 		</b>*</font></p>
 <p><font size="9" >
 		<?php if($plec == "M"): ?>
-		<del>Panią</del>/<del>Pani</del>/Pana*
+		<del>Panią</del>/Pana*
 		<?php else:?>
-		Panią/<del>Pani</del>/<del>Pana</del>*
+		Panią/<del>Pana</del>*
 		<?php endif;?>
 			
 	<b><?php echo $nazwiskoimie; ?></b>,</font></p>
@@ -87,9 +87,7 @@
 	<?php else:?> 
 	Panią/<del>Pana</del>*
 <?php endif;?>
-	do przestrzegania przepisów dotyczących ochrony danych osobowych oraz wprowadzonych i
-wdrożonych do stosowania przez Administratora dokumentacji związanej z ochrona danych osobowych. W związku z niniejszym
-upoważnieniem tracą moc poprzednie upoważnienia.</font></p>
+	do przestrzegania przepisów dotyczących ochrony danych osobowych oraz wprowadzonych i wdrożonych do stosowania przez Administratora Danych „Polityki Bezpieczeństwa Informacji” oraz „Instrukcji zarządzania systemem informatycznym służącym do przetwarzania danych osobowych”. W związku z ninijeszym upoważnieniem tracą moc poprzednie upoważnienia.</font></p>
 	<table width="100%" cellpadding="0" cellspacing="0" border="0">
 		<tr valign="top"><td width="50%"><p align="center"><?php echo $miasto;?>, 
 				<?php echo $data_od; ?>

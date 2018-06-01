@@ -165,6 +165,10 @@ function dodaj_uzytkownika($tablica,$haslo)
 		zapisz_log($this->session->userdata("id"),24,$tablica["name"]." / ".$tablica["login"]."");
 		$this->db->cache_delete('uzytkownicy','index');		
 		
+		$this->db->select_max('id');
+		$result= $this->db->get('users')->row_array();
+		return $result['id'];
+		
 	}
 	
 function nowe_haslo($id,$hash)
@@ -224,52 +228,68 @@ function pobierz_acl($id)
 		return $this->db->get('users_acl');
 	}	
 	
-function edytuj_acl_uzytkownika($id,$name,$tablica)
-	{
-		$r = array(
-			'upr'           => $tablica["typ"],
-			'zaklad'        => $tablica["zaklad"]
-		);
+// function edytuj_acl_uzytkownika($id,$name,$tablica)
+	// {
+		// $r = array(
+			// 'upr'           => $tablica["typ"],
+			// 'zaklad'        => $tablica["zaklad"]
+		// );
 	
+		// $this->db->where("id",$id);
+		// $this->db->update("users",$r);
+		
+		// $this->db->where("id_user",$id);
+		// $this->db->delete("users_acl");
+		
+		// $q = $this->User_model->spis_acl();
+		// $z = 0;
+		// foreach($q->result() as $i => $row)
+		// {
+			// if(isset($tablica["acl".$row->id][1]))
+				// $access_rw = 2;
+			// else
+				// {
+			// if(isset($tablica["acl".$row->id][0]))
+				// $access_rw = 1;
+			// else
+				// $access_rw = 0;
+			// }
+		
+			// $rekord[$i] = array(
+				// "id" 			=> NULL,
+				// "id_user"	=> $id,
+				// "acl" 		=> $row->modul,
+				// "access_rw" => $access_rw
+			// );
+			
+			// $z = $z + $access_rw;
+		// }
+		// $this->db->insert_batch('users_acl',$rekord);	
+		
+		// $acl_s = crypt(md5($z).$id,$this->config->item("encryption_key"));
+		// $acl = array ( "acl" => $acl_s );
+		// $this->db->where("id",$id);
+		// $this->db->update("users",$acl);
+	
+		// zapisz_log($this->session->userdata("id"),23,"".$name."",$rekord);
+		// $this->db->cache_delete_all();		
+	// }
+function dodaj_acll($id, $acll)
+{
+		$r = array(
+			'acl'           => $acll
+		);
+
+		echo $id.'<br>';
+		
 		$this->db->where("id",$id);
 		$this->db->update("users",$r);
-		
-		$this->db->where("id_user",$id);
-		$this->db->delete("users_acl");
-		
-		$q = $this->User_model->spis_acl();
-		$z = 0;
-		foreach($q->result() as $i => $row)
-		{
-			if(isset($tablica["acl".$row->id][1]))
-				$access_rw = 2;
-			else
-				{
-			if(isset($tablica["acl".$row->id][0]))
-				$access_rw = 1;
-			else
-				$access_rw = 0;
-			}
-		
-			$rekord[$i] = array(
-				"id" 			=> NULL,
-				"id_user"	=> $id,
-				"acl" 		=> $row->modul,
-				"access_rw" => $access_rw
-			);
-			
-			$z = $z + $access_rw;
-		}
-		$this->db->insert_batch('users_acl',$rekord);	
-		
-		$acl_s = crypt(md5($z).$id,$this->config->item("encryption_key"));
-		$acl = array ( "acl" => $acl_s );
-		$this->db->where("id",$id);
-		$this->db->update("users",$acl);
-	
-		zapisz_log($this->session->userdata("id"),23,"".$name."",$rekord);
-		$this->db->cache_delete_all();		
-	}
+		zapisz_log($this->session->userdata("id"),23,"Acl: ".$acll."");
+		$this->db->cache_delete('uzytkownicy','index');
+}
+
+
+
 function edytuj_uzytkownika($id,$name,$email)
 	{
 		$r = array(
@@ -283,6 +303,7 @@ function edytuj_uzytkownika($id,$name,$email)
 		zapisz_log($this->session->userdata("id"),23,"Nazwisko: ".$name."");
 		$this->db->cache_delete('uzytkownicy','index');
 	}
+	
 function uzytkownicy_zalogowani(){
 	$this->db->select("user_data");
 	$this->db->from("sesje");

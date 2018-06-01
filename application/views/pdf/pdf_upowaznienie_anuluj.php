@@ -23,15 +23,15 @@
 <p><font size="10" >
 	<?php if($data_do <= date("Y-m-d")): ?>
 	<?php if($plec == "M"): ?>
-		<del>Panią</del>/<del>Pani</del>/Pana*
+		<del>Panią</del>/Pana*
 		<?php else:?> 
-		<del>Panią</del>/Pani/<del>Pana</del>*
+		Panią/<del>Pana</del>*
 		<?php endif;?>
 	<?php else:?>
 		<?php if($plec == "M"): ?>
-		<del>Panią</del>/<del>Pani</del>/Pana*
+		<del>Panią</del>/Pana*
 		<?php else:?>
-		Panią/<del>Pani</del>/<del>Pana</del>*
+		Panią/<del>Pana</del>*
 		<?php endif;?>
 	<?php endif;?>
 			

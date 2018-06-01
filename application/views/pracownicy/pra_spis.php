@@ -13,16 +13,6 @@
     </thead>
 	 <tbody>
  </tbody>
-    <tfooter>
-        <tr>
-		<th style="text-align:center">Nazwisko i imię [płeć] </th>
-		<th style="text-align:center">Zakład</th>
-			<?php if($perm == 2):?>
-         <th style="text-align:center">Opcje</th>
-		<?php endif;?>
-
-		  </tr>
-    </tfooter>
 
 </table>
 

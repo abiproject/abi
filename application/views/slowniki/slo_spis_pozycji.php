@@ -6,18 +6,11 @@
         <tr>
 			<th style="text-align:center">Nazwa pozycji</th>
 			<th style="text-align:center">Zakład</th>
-         <th style="text-align:center">Opcje</th>
+			<th style="text-align:center">Opcje</th>
         </tr>
     </thead>
 	 <tbody>
   	 </tbody>
-    <tfooter>
-        <tr>
-			<th style="text-align:center">Nazwa pozycji</th>
-			<th style="text-align:center">Zakład</th>
-         <th style="text-align:center">Opcje</th>
-        </tr>
-    </tfooter>
 </table>
 <script src="<?php echo base_url('js/jquery.dataTables.min.js')?>"></script>
 <script src="<?php echo base_url('js/dataTables.bootstrap.js')?>"></script>
@@ -33,7 +26,7 @@ $('.table_slownik').DataTable({
 "ajax": "<?= $json_url;?>",
 "columns": [
             { "data": "nazwa", sClass: "alignCenter" },
-				{ "data": "nazwa_zakladu", sClass: "alignCenter" }
+			{ "data": "nazwa_zakladu", sClass: "alignCenter" }
 			<?php if($perm == 2):?>,
 	 		 { "render": function ( data, type, full, meta ) {
 				 $("[data-toggle=tooltip]").tooltip();
@@ -53,7 +46,7 @@ $('.table_slownik').DataTable({
 				  t1 = t1 + '<a data-toggle="tooltip" data-container="body" title="Edycja opisu zbioru" href="<?php echo site_url('zbiory/edit_opis/');?>/'+ id +'/<?= $a;?>"><img src="<?php echo base_url('img/edit.png');?>"></a> ';
 				  	  
 				  t1 = t1 + '<a data-toggle="tooltip" rel="tooltip" title="Edycja zabezpieczeń zbiorów danych" href="<?php echo site_url('zbiory/edytuj_zab/');?>/'+ id +'/<?= $a;?>"><a data-toggle="tooltip" rel="tooltip" title="Edycja zabezpieczeń zbiorów danych" href="<?php echo site_url('zbiory/edytuj_zab/');?>/'+ id +'/<?= $a;?>"><img src="<?php echo base_url('img/lock.png');?>"></a> <a data-toggle="tooltip" rel="tooltip" title="Edycja zakresu gromadzonych danych" href="<?php echo site_url('zbiory/edytuj/');?>/'+ id + '/<?= $a;?>"><img src="<?php echo base_url('img/zakres_zbiorow.png');?>"></a>';
-				  <? endif;?>
+				  <?php endif;?>
 				  var t2 = ' <a data-toggle="tooltip" rel="tooltip" title="Zmień nazwę pozycji" href="<?php echo site_url('slowniki/index/edytuj/');?>/<?=$a;?>/'+ id +'"><img src="<?php echo base_url("img/grupa_e.png");?>"></a> <a data-toggle="tooltip" rel="tooltip" title="Usuń pozycję" href="<?php echo site_url('slowniki/index/usun/');?>/<?=$a;?>/'+ id +'"><img src="<?php echo base_url("img/delete.png");?>"></a>';
 
 			  	 return t1+t2;					  

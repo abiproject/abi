@@ -8,15 +8,14 @@ public function __construct()
 		check_perm($this->session->userdata("id"),$this->uri->segment(1));
 		$this->load->model(array("Zaklady_model","Pracownicy_model","Slowniki_model","Zbiory_model","Rejestry_model"));
       $this->breadcrumbs->push('Rejestry', '/rejestry/index');
-		
-      //$this->breadcrumbs->unshift('Zakłady', site_url('admin/index'));			  			  
+					  			  
 	}
 public function json()
 	{
 		if($this->input->post()){
 		
 		$order 	= $this->input->post('order');
-		$order["columns"] 	= $this->input->post('columns'); // $order[0]['column'];
+		$order["columns"] 	= $this->input->post('columns');
 
 		if($this->uri->segment(3) === "filtr"  && $this->uri->segment(4) > 0 && $this->session->userdata("zaklad") == 0 && $this->input->post('length')){
 			$data["json"] = $this->Rejestry_model->pobierz_rej_u_json($this->uri->segment(4),$this->input->post('length'),$this->input->post('start'),$this->input->post('search'),$order);
@@ -119,11 +118,7 @@ public function index()
 				}
 				
 				
-				
-			
-			// $q=$this->Rejestry_model->pobierz_rej_u($this->session->userdata("zaklad"));
-// 			$data["rejestr"] = $q->result_array();
-//
+
 		
 				if($q->num_rows() > 0)
 				{
@@ -155,7 +150,6 @@ public function edytuj()
 			
 			if($this->uri->segment(3) === "update")
 				{
-					//$ans = $this->Rejestry_model->zmien_typ($this->input->post("id"),$this->input->post("typ"));
 					$zbiory = array_unique(array_filter(explode(", ",$this->input->post("zbiory"))));
 					$nowe = $this->Rejestry_model->usun_zbiory($this->input->post("id_umowy"),$this->input->post("id_zaklad"),$zbiory);
 					if(!empty($nowe)){

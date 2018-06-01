@@ -146,6 +146,15 @@ function dodaj_pozycje($pozycja,$id_zaklad,$id_slownik)
 		$this->db->cache_delete('admin','upo_edytuj');
 		$this->db->cache_delete('api','giodo');
 	}
+	
+	
+	
+function usun_wszystko($id, $table)
+{
+	
+	$this->db->where('id_upo', $id);
+	$this->db->delete($table);
+}	
 
 function usun_pozycje($id_slownik,$id_pozycja)
 	{

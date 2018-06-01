@@ -86,6 +86,7 @@ public function index()
 				$html = $this->load->view("pdf/pdf_protokol_unk",$data,true);
 				
 				@$pdf->writeHTML($html, true, false, true, false, '');
+				ob_end_clean();
 				$pdf->Output('Protkol_UNK.pdf', 'D');
 				}
 				else

@@ -10,14 +10,6 @@
     </thead><tbody>
 			 <tbody>
 		 </tbody>
-		    <tfooter>
-       <tr>
-		<th style="text-align:center">Data</th>
-		<th style="text-align:center">Login</th>
-		<th style="text-align:center">Adres IP</th>
-      <th style="text-align:center">Typ logowania</th>
-       </tr>
-	 </tfooter>
  </table>
   
   

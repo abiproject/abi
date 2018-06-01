@@ -24,7 +24,7 @@
 <td style="text-align: center;"><?php echo $row["data"];?></td>
 <td style="text-align: center;"><?php echo $row["komorka"];?></td>
 <td style="text-align: center;">
-<a data-toggle="tooltip" rel="tooltip" title="Wydrukuj protokół" href='<?php echo  site_url("rejestry_unk/drukuj/".$row["id"]."");?>'>
+<a data-toggle="tooltip" rel="tooltip" title="Pobierz PDF " href='<?php echo  site_url("rejestry_unk/drukuj/".$row["id"]."");?>'>
 <img src="<?php echo base_url("img/pdf.png");?>"></a>
 <a data-toggle="tooltip" rel="tooltip" title="Usuń pozycję" href='<?php echo site_url("rejestry_unk/index/usun/".$row["id"]."");?>'>
 	<img src="<?php echo base_url("img/delete.png");?>"></a></td>

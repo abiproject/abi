@@ -5,10 +5,10 @@
     <tr style="text-align: center;">
 				<th style="text-align: center;">Nr</th>
 				<th style="text-align: center;">Nazwisko i imię</th>
-            <th style="text-align: center;">Miejsce Pracy</th>
-            <th style="text-align: center;">Data od - Data do</th>
-            <th style="text-align: center;">ASI</th>
-            <th style="text-align: center;">ABI</th>
+				<th style="text-align: center;">Miejsce Pracy</th>
+				<th style="text-align: center;">Data od - Data do</th>
+				<th style="text-align: center;">ASI</th>
+				<th style="text-align: center;">ABI</th>
 				<th style="text-align: center;">Opcje</th>
 		</tr>
 </thead>
@@ -21,10 +21,10 @@
 <?php endif;?>			
 
 <td style="text-align: center;"><?php echo $item["nr"];?></td>
-<td style="text-align: left;"><?php echo $item["nazwiskoimie"];?></a></td>
+<td style="text-align: left;"><?php if (isset($item["nazwiskoimie"])) echo $item["nazwiskoimie"];?></a></td>
 <td style="text-align: center;"><?php echo $item["nazwa_zakladu"];?></td>
-<td style="text-align: center;"><?php echo $item["data_od"].' - '.$item["data_do"].' ';?>
-<?php if(date_create($item["data_do"]) < date_create(date("Y-m-d"))): ?>			
+<td style="text-align: center;"><?php if (isset($item["data_od"])) echo $item["data_od"].' - '.$item["data_do"].' ';?>
+<?php if (isset($item["data_do"])) if(date_create($item["data_do"]) < date_create(date("Y-m-d"))): ?>			
 <a data-toggle="tooltip" rel="tooltip" title="Wygasłe upoważnienie"><img src="<?php echo base_url("img/red.png");?>"></a>
 <?php elseif(date_create($item["data_do"]) < date_create($tydzien)):?>			
 	<?php 	
@@ -42,7 +42,7 @@
 <?php endif;?>										
 									<?php									
 									
-					if($item["ASI"] > 0)
+					if (isset($item["ASI"])) if($item["ASI"] > 0)
 					{
 						$asi = "<img src=".base_url("img/green.png").">";
 					}
@@ -51,7 +51,7 @@
 						$asi = "<img src=".base_url("img/red.png").">";
 					}                                               
 					                                                
-					if($item["ABI"] > 0)                               
+					if (isset($item["ABI"])) if($item["ABI"] > 0)                               
 					{                                               
 						$abi = "<img src=".base_url("img/green.png").">";
 					}                                               
@@ -62,16 +62,16 @@
 					?>
 									
 </td>
-<td style="text-align: center;"><?php echo $asi;?></td>
-<td style="text-align: center;"><?php echo $abi;?></td>
+<td style="text-align: center;"><?php if (isset($asi)) echo $asi;?></td>
+<td style="text-align: center;"><?php if (isset($abi)) echo $abi;?></td>
 <td style="text-align: center;">
+<a data-toggle="tooltip" rel="tooltip" title="Wyczyść upoważnienie" href='<?php echo site_url("admin/upo/upo_wyczysc/".$item["uid"]."");?>'>
+	<img src="<?php echo base_url("img/delete.png");?>"></a>
 <a data-toggle="tooltip" rel="tooltip" title="Edytuj upoważnienie" href='<?php echo site_url("admin/upo_edytuj/".$item["uid"]."");?>'>
 	<img src="<?php echo base_url("img/edit.png");?>"></a>
 <a data-toggle="tooltip" rel="tooltip" title="Pobierz PDF upoważenienie" href='<?php echo site_url("export/pdf/".$item["uid"]."");?>'>
 	<img src="<?php echo base_url("img/pdf.png");?>"></a>
 
-<a data-toggle="tooltip" rel="tooltip" title="Usuń upoważnienie" href='<?php echo site_url("admin/upo/usun/".$item["uid"]."");?>'>
-	<img src="<?php echo base_url("img/delete.png");?>"></a>
 	<span  data-toggle="modal" data-target="#myModal<?php echo $item["uid"] ?>">
 		<a rel="tooltip" title="Cofnij upoważnienie" data-toggle="tooltip" >
 	<img src="<?php echo base_url("img/back.png");?>"></a></span>

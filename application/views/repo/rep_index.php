@@ -2,17 +2,17 @@
 <ul><strong>Załącznik 3 Umowa o poufności kompleksowa <span class="label label-success">Aktualizacja</span></strong>
 <ul>
 		<li>
-			<a href='<?php echo site_url("repo/index/pdf/zalacznik3/");?>'>Wydrukuj czysty wzór</a></li>
+			<a href='<?php echo site_url("repo/index/pdf/zalacznik3/");?>'>Czysty wzór</a></li>
 </ul></ul>
 <ul><strong>Załącznik 4 Umowa powierzenia kompleksowa <span class="label label-success">Aktualizacja</span></strong>
 <ul>
 		<li>
-			<a href='<?php echo site_url("repo/index/pdf/zalacznik4/");?>'>Wydrukuj czysty wzór</a></li>
+			<a href='<?php echo site_url("repo/index/pdf/zalacznik4/");?>'>Czysty wzór</a></li>
 </ul></ul>
 <ul><strong>Załącznik 7 Uprawnienia Administratora</strong>
 <ul>
 		<li>
-			<a href='<?php echo site_url("repo/index/pdf/zalacznik7/");?>'>Wydrukuj czysty wzór</a></li>
+			<a href='<?php echo site_url("repo/index/pdf/zalacznik7/");?>'>Pobierz czysty wzór</a></li>
 </ul></ul>
 <ul><strong>Załącznik 9 Wniosek o udostępnienie danych ze zbioru danych osobowych <span class="label label-success">Aktualizacja</span></strong>
 <ul>

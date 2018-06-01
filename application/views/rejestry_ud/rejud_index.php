@@ -17,20 +17,6 @@
     </thead>
 	 <tbody>
  </tbody>
-    <tfooter>
-        <tr>
-			<th style="text-align:center">Lp</th>
-			<th style="text-align:center; width: 15%">Zakład</th>
-			<th style="text-align:center; width: 10%">Data</th>
-			<th style="text-align:center">Podmiot</th>
-			<th style="text-align:center">Podstawa</th>
-			<th style="text-align:center">Zakres</th>
-			<th style="text-align:center">Dane osobowe</th>
-			<th style="text-align:center">Załącznik</th>
-			<?php if($perm == 2):?><th style="text-align:center; width: 10%">Opcje</th><?php endif;?>
-		  </tr>
-    </tfooter>
-
 </table>
 
 <script src="<?php echo base_url('js/jquery.dataTables.min.js')?>"></script>

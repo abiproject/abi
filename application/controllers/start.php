@@ -3,7 +3,7 @@ class Start extends CI_Controller {
 	
 	public function index()
 	{
-		if(check_login() AND $this->uri->segment(2) != 'wyloguj')
+		if(check_login())
 			{
 				header('Location: '.site_url('admin/index'));
 			}
@@ -15,21 +15,9 @@ class Start extends CI_Controller {
 	
 	public function logowanie()
 	{
-		$this->load->library("encrypt");
-		$key = $this->config->item("encryption_key");
-
- 		// $msg = 'akiermasz99';
-//  		$encrypted_string = $this->encrypt->encode(md5($msg), $key);
-//  		echo $encrypted_string."<br/>";
-// 		die();
-//$encrypted_string = "" //62ts2o93s1 
-// 		$msg = $this->encrypt->decode($encrypted_string, $key);
-// 		echo $msg."<br/>";
-// 		//var_dump($this->config->item("encryption_key"));
-// 		die("END");
-		
-		$this->load->helper('logacs');
+		$this->load->library("encryption");		
 		$this->load->model('Login_model');
+		$this->load->helper('logacs');
 		$data_head["tytul"] = "Upoważnienia - Logowanie";
 		$data["url"] = site_url("start/rejestracja");
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger" role="alert" id="errorMsg">', '</div>');
@@ -50,7 +38,7 @@ class Start extends CI_Controller {
 					if($query->num_rows() == 1)
 					{
 						$row = $query->row();
-						if($this->encrypt->decode($row->haslo, $key) === md5($this->input->post('password')))
+						if($this->encryption->decrypt($row->haslo) === md5($this->input->post('password')))
 						{
 
 						if($row->aktywne_konto == 0)
@@ -109,8 +97,7 @@ class Start extends CI_Controller {
 public function zmiana_hasla()
 	{
 		$this->load->model('Login_model');
-		$this->load->library("encrypt");
-		$key = $this->config->item("encryption_key");		
+		$this->load->library("encryption");		
 		$this->load->helper('logacs');
 		
 		$data_head["tytul"] = "";
@@ -134,9 +121,9 @@ public function zmiana_hasla()
 					if($query->num_rows() == 1)
 					{
 						$row = $query->row();
-						if($this->encrypt->decode($row->haslo, $key) === $this->input->post('password'))
+						if($this->encryption->decrypt($row->haslo) === $this->input->post('password'))
 						{	
-				 			$haslo = $this->encrypt->encode($this->input->post("password_n"), $key);
+				 			$haslo = $this->encryption->encrypt($this->input->post("password_n"));
 							$this->Login_model->zmien_haslo($this->input->post("id"),$data["username"],$haslo);
 							$this->session->set_flashdata("msg","Pomyślnie zmieniono hasło użytkownika!");
 							redirect("/start","refresh");			

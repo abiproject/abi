@@ -9,7 +9,6 @@ public function __construct()
 	 $this->load->model(array("Zaklady_model","Rejestry_model","Pracownicy_model","Slowniki_model","Upo_model","Zbiory_model"));
     $this->breadcrumbs->push('Rejestry', 'rejestry/index');
     $this->breadcrumbs->unshift('Zakłady', site_url('admin/index'));	
-	//$this->output->enable_profiler(TRUE);
 
  }
  
@@ -30,8 +29,12 @@ public function index()
 			$this->load->view("motyw_new");	
 		
 	}
-public function upowaznienia()
+	
+	
+	public function upowaznienia()
 	{		
+	
+	
 		$this->load->library("table");
 		$this->load->library('excel');
 	
@@ -50,8 +53,6 @@ public function upowaznienia()
 		$slownik_zb_count = $q->num_rows();
 		
 		
-		//$this->output->enable_profiler("TRUE");
-		//konfiguracja
 		$this->excel->setActiveSheetIndex(0);
 		$this->excel->getDefaultStyle()->getFont()->setName('Arial');
 		$this->excel->getDefaultStyle()->getFont()->setSize(10);
@@ -201,6 +202,7 @@ public function upowaznienia()
 		header('Content-Disposition: attachment;filename="'.$filename.'"');
 		header('Cache-Control: max-age=0');
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+		ob_end_clean();
 		$objWriter->save('php://output');
 		
 	}
@@ -231,6 +233,7 @@ public function struktury_zbiorow()
 			$pdf->AddPage(); 
 			$html = $this->load->view("pdf/pdf_struktury_zbiorow",$data,true);
 			@$pdf->writeHTML($html, true, false, true, false, '');
+			ob_end_clean();
 			$pdf->Output('Opis_struktury_zbiorow_danych.pdf', 'D'); 
 
 		}
@@ -260,6 +263,7 @@ public function struktury_zbiorow_zab()
 				$pdf->AddPage('L'); 
 				$html = $this->load->view("pdf/pdf_struktury_zbiorow_zab",$data,true);
 				@$pdf->writeHTML($html, true, false, true, false, '');
+				ob_end_clean();
 				$pdf->Output('Opis_zabezpieczen_zbiorow_danych.pdf', 'D'); 
 
 			}
@@ -289,6 +293,7 @@ public function rejestr_pz_pdf()
 				$pdf->AddPage('L'); 
 				$html = $this->load->view("pdf/pdf_rejestr_pz",$data,true);
 				@$pdf->writeHTML($html, true, false, true, false, '');
+				ob_end_clean();
 				$pdf->Output('Rejestr_PZ.pdf', 'D');
 			}
 
@@ -332,7 +337,8 @@ public function rejestr_ud_pdf()
                                   $html = $this->load->view("pdf/pdf_rejestr_ud",$data,true);
                                   $pdf->writeHTML($html, true, false, true, false, '');
 				  $pdf->lastPage();
-                                  #$pdf->Output('Rejestr_UD-'.$start.'.pdf', 'D');
+                                  
+								  ob_end_clean();
 				  $pdf->Output('/tmp/Rejestr_UD_'.$id_zaklad.'_'.$start.'.pdf', 'F');
     				  $zip->addFile('/tmp/Rejestr_UD_'.$id_zaklad.'_'.$start.'.pdf','Rejestr_UD_'.$id_zaklad.'_'.$start.'.pdf');
 				 }
@@ -361,6 +367,7 @@ public function rejestr_ud_pdf()
                                   $html = $this->load->view("pdf/pdf_rejestr_ud",$data,true);
                                   $pdf->writeHTML($html, true, false, true, false, '');
                                   $pdf->lastPage();
+								  ob_end_clean();
                                   $pdf->Output('Rejestr_UD.pdf', 'D');
 
 				}	
@@ -391,6 +398,7 @@ public function rejestr_unk_pdf()
 				$pdf->AddPage('L'); 
 				$html = $this->load->view("pdf/pdf_rejestr_unk",$data,true);
 				@$pdf->writeHTML($html, true, false, true, false, '');
+				ob_end_clean();
 				$pdf->Output('Rejestr_UNK.pdf', 'D');
 			}
 public function rejestr_umow_pdf()
@@ -417,6 +425,7 @@ public function rejestr_umow_pdf()
 			$pdf->AddPage('L'); 
 			$html = $this->load->view("pdf/pdf_rejestr_umow",$data,true);
 			@$pdf->writeHTML($html, true, false, true, false, '');
+			ob_end_clean();
 			$pdf->Output('Rejestr_umow.pdf', 'D');
 		}
 		

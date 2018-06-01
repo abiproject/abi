@@ -39,26 +39,31 @@ public function index()
 						case "zalacznik3":
 							$html = $this->load->view("pdf/pdf_zalacznik3",$data,true);
 							@$pdf->writeHTML($html, true, false, true, false, '');
+							ob_end_clean();
 							$pdf->Output('Zalacznik_3.pdf', 'D'); 
 							break;
 						case "zalacznik4":
 							$html = $this->load->view("pdf/pdf_zalacznik4",$data,true);
 							@$pdf->writeHTML($html, true, false, true, false, '');
+							ob_end_clean();
 							$pdf->Output('Zalacznik_4.pdf', 'D'); 
 							break;
 						case "zalacznik7":
 							$html = $this->load->view("pdf/pdf_zalacznik7",$data,true);
 							@$pdf->writeHTML($html, true, false, true, false, '');
+							ob_end_clean();
 							$pdf->Output('Zalacznik_7.pdf', 'D'); 
 							break;
 						case "zalacznik9":
 							$html = $this->load->view("pdf/pdf_zalacznik9",$data,true);
 							@$pdf->writeHTML($html, true, false, true, false, '');
+							ob_end_clean();
 							$pdf->Output('Zalacznik_9.pdf', 'D'); 
 							break;
 						case "zalacznik10":
 							$html = $this->load->view("pdf/pdf_zalacznik10",$data,true);
 							@$pdf->writeHTML($html, true, false, true, false, '');
+							ob_end_clean();
 							$pdf->Output('Zalacznik_10.pdf', 'D'); 
 							break;
 						}
@@ -87,6 +92,7 @@ public function zalacznikI()
 		if($this->uri->segment(3) == 4)
 		$html = $this->load->view("pdf/pdf_zalacznik_i_4",$data,true);
 		@$pdf->writeHTML($html, true, false, true, false, '');
+		ob_end_clean();
 		$pdf->Output('Zalacznik_I.pdf', 'D'); 
 
 	}
@@ -106,6 +112,7 @@ public function powolanie_asi()
 			$pdf->AddPage(); 
 			$html = $this->load->view("pdf/pdf_powolanie_asi",$data,true);
 			@$pdf->writeHTML($html, true, false, true, false, '');
+			ob_end_clean();
 			$pdf->Output('Powolanie_ASI.pdf', 'D'); 
 
 		}
@@ -125,6 +132,7 @@ public function oswiadczenie_wolonat()
 			$pdf->AddPage(); 
 			$html = $this->load->view("pdf/pdf_oswiadczenie_wolontariusz",$data,true);
 			@$pdf->writeHTML($html, true, false, true, false, '');
+			ob_end_clean();
 			$pdf->Output('Oswiadczenie_wolontariusza.pdf', 'D'); 
 		}
 
@@ -143,6 +151,7 @@ public function oswiadczenie_pracownika_t()
 			$pdf->AddPage(); 
 			$html = $this->load->view("pdf/pdf_oswiadczenie_pracownika_t",$data,true);
 			@$pdf->writeHTML($html, true, false, true, false, '');
+			ob_end_clean();
 			$pdf->Output('Oswiadczenie_pracownika_technicznego.pdf', 'D'); 
 		}
 		
@@ -161,6 +170,7 @@ public function oswiadczenie_uzytk_zat()
 			$pdf->AddPage(); 
 			$html = $this->load->view("pdf/pdf_oswiadczenie_uzytk_zat",$data,true);
 			@$pdf->writeHTML($html, true, false, true, false, '');
+			ob_end_clean();
 			$pdf->Output('Oswiadczenie_uzytkownika_zatrudnionego.pdf', 'D'); 
 		}
 
@@ -179,6 +189,7 @@ public function oswiadczenie_zleceniobiorcy()
 			$pdf->AddPage(); 
 			$html = $this->load->view("pdf/pdf_oswiadczenie_zleceniobiorcy",$data,true);
 			@$pdf->writeHTML($html, true, false, true, false, '');
+			ob_end_clean();
 			$pdf->Output('Oswiadczenie_zleceniobiorcy.pdf', 'D'); 
 		}
 
@@ -197,6 +208,7 @@ public function wniosek_do()
 			$pdf->AddPage(); 
 			$html = $this->load->view("pdf/pdf_wniosek_do",$data,true);
 			@$pdf->writeHTML($html, true, false, true, false, '');
+			ob_end_clean();
 			$pdf->Output('Wniosek_udostepnienie_do.pdf', 'D'); 
 		}
 
@@ -215,6 +227,7 @@ public function upowaznienie_osoby()
 			$pdf->AddPage(); 
 			$html = $this->load->view("pdf/pdf_upowaznienie_osoby",$data,true);
 			@$pdf->writeHTML($html, true, false, true, false, '');
+			ob_end_clean();
 			$pdf->Output('Upowazenienie_osoby_trzeciej.pdf', 'D'); 
 		}
 

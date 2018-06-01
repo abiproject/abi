@@ -1,4 +1,6 @@
-<?php// if(strlen($msg) > 0) echo '<div class="alert alert-success" role="alert" id="okMsg">'.$msg.'</div>';?>
+<?php
+// if(strlen($msg) > 0) echo '<div class="alert alert-success" role="alert" id="okMsg">'.$msg.'</div>';
+?>
 <div class="well">
 
 <div class="alert alert-success" role="alert">
@@ -11,8 +13,7 @@ Witaj w aplikacji <strong><span  class="glyphicon glyphicon-tint"></span> ABI In
 <dt style="margin-bottom:5px;">Pracowników:</dt><dd><span class="label label-success"><span class="glyphicon glyphicon-briefcase"></span> <?php echo $suma_pracownikow; ?></span></dd>
 <dt style="margin-bottom:5px;">Upoważnień:</dt><dd><span class="label label-success"><span class="glyphicon glyphicon-inbox"></span> <?php echo $suma_upo; ?></span> w tym wygasających w ciągu najbliższych 14 dni <a href="<?php echo site_url('admin/upo/wygasajace');?>"><span class="label label-danger"> <?php echo $suma_upo_wygasajacych;?></span></a></dd>
 </dl></div>
-<div class="alert alert-info" role="alert"><span class="
-glyphicon glyphicon-calendar"></span> <strong><?php echo date('d/m/Y H:i');?></strong><br/>Aktualnie zalogowani użytkownicy: <? foreach($users_logged as $user): ?><strong><?= $user;?></strong>, <?php endforeach;?>
+<div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-calendar"></span> <strong><?php echo date('d/m/Y H:i');?></strong><br/>Aktualnie zalogowani użytkownicy: <?php foreach($users_logged as $user): ?><strong><?php= $user;?></strong>, <?php endforeach;?>
 <br/><br/>Dzisiaj mamy <strong><?php echo date('z') + 1;?></strong> dzień roku, jak się czujesz użytkowniku?<br/>
 <?php if(date("N") > 5):?>
 Dziś weekend!<br/>

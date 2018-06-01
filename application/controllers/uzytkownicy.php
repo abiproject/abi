@@ -13,7 +13,7 @@ public function __construct()
 	{
 	    parent::__construct();
 	    check_perm($this->session->userdata("id"),$this->uri->segment(1));
-		 $this->breadcrumbs->unshift('Admin', site_url('adm/index') );
+		 $this->breadcrumbs->unshift('Admin', "/" );
    }
 
 public function index()
@@ -24,6 +24,7 @@ public function index()
 		$this->load->view('head',$data_head);
 		$this->load->view("menu_admin",menu_acl($this->session->userdata("id")));
 		$data["perm"] = check_perm($this->session->userdata("id"),$this->uri->segment(1));
+
   
 		if($this->uri->segment(3) == "usun" && is_numeric($this->uri->segment(4)) && isset($data["perm"]))
 		{
@@ -40,11 +41,10 @@ public function index()
 		{
 			if($data["perm"] == 2)
 			{
-				$this->load->library("encrypt");					
-				$key = $this->config->item("encryption_key");
+				$this->load->library("encryption");					
 				$chars = "abcdefghijklmnopqrstuvwxyz0123456789";
 				$haslo = substr(str_shuffle($chars),0,8);
-				$haslo_hash = $this->encrypt->encode(md5($haslo),$key);
+				$haslo_hash = $this->encryption->encrypt(md5($haslo));
 				
 				$ans = $this->User_model->nowe_haslo($this->uri->segment(4),$haslo_hash);	
 				$this->session->set_flashdata("msg","Nowe hasło: $haslo");
@@ -155,11 +155,14 @@ public function nowy()
 				$q = $this->User_model->uzytkownik_login($this->input->post("name"));
 				if($q->num_rows == 0)
 				{
-					$this->load->library("encrypt");					
-					$key = $this->config->item("encryption_key");
-		 			$haslo = $this->encrypt->encode(md5($this->input->post("haslo")), $key);
-					$this->User_model->dodaj_uzytkownika($this->input->post(),$haslo);
-					$this->session->set_flashdata("msg","Dodano nowego użytkownika!");
+					$this->load->library("encryption");					
+		 			$haslo = $this->encryption->encrypt(md5($this->input->post("haslo")));
+					$id= $this->User_model->dodaj_uzytkownika($this->input->post(),$haslo);
+					 echo $id;
+					 $acll=menu_acl($id, 1);
+				     $this->User_model->dodaj_acll($id, $acll);
+					 echo $acll;
+					 $this->session->set_flashdata("msg","Dodano nowego użytkownika!");
 					redirect("/uzytkownicy","refresh");			
 				}
 				else

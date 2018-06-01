@@ -15,17 +15,6 @@
     </thead>
 	 <tbody>
 	 </tbody>
-	 <tfooter>
-	        <tr>
-				<th style="text-align:center">Lp</th>
-				<th style="text-align:center">Zakład</th>
-				<th style="text-align:center">Nazwa firmy</th>
-				<th style="text-align:center">Cel przetwarzania danych</th>
-				<th style="text-align:center">Data umowy</th>
-				<th style="text-align:center">Dodatki do umowy</th>			
-				<th style="text-align:center;width: 10%;">Opcje</th>
-			  </tr>
-	    </tfooter>
 </table>
 <script src="<?php echo base_url('js/jquery.dataTables.min.js')?>"></script>
 <script src="<?php echo base_url('js/dataTables.bootstrap.js')?>"></script>

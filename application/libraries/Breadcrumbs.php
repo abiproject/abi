@@ -85,7 +85,8 @@ if ($this->breadcrumbs) {
 $output = $this->tag_open;
 // construct output
 foreach ($this->breadcrumbs as $key => $crumb) {
-if (end(array_keys($this->breadcrumbs)) == $key) {
+	$ar=array_keys($this->breadcrumbs);
+if (end($ar) == $key) {
 $output .= $this->crumb_last_open . '' . $crumb['page'] . '' . $this->crumb_close;
 } else {
 $output .= $this->crumb_open.'<a href="' . $crumb['href'] . '">' . $crumb['page'] . '</a> '.$this->crumb_divider.$this->crumb_close;

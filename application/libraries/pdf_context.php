@@ -21,11 +21,7 @@ if (!class_exists('pdf_context', false)) {
     
     class pdf_context {
     
-        /**
-         * Modi
-         *
-         * @var integer 0 = file | 1 = string
-         */
+  
         var $_mode = 0;
         
     	var $file;
@@ -35,19 +31,14 @@ if (!class_exists('pdf_context', false)) {
     
     	var $stack;
     
-    	// Constructor
     
-    	function pdf_context(&$f) {
+    	function __constructor(&$f) {
     		$this->file =& $f;
     		if (is_string($this->file))
     		    $this->_mode = 1;
     		$this->reset();
     	}
-    
-    	// Optionally move the file
-    	// pointer to a new location
-    	// and reset the buffered data
-    
+
     	function reset($pos = null, $l = 100) {
     	    if ($this->_mode == 0) {
             	if (!is_null ($pos)) {
@@ -66,11 +57,6 @@ if (!class_exists('pdf_context', false)) {
     		$this->stack = array();
     	}
     
-    	// Make sure that there is at least one
-    	// character beyond the current offset in
-    	// the buffer to prevent the tokenizer
-    	// from attempting to access data that does
-    	// not exist
     
     	function ensure_content() {
     		if ($this->offset >= $this->length - 1) {
@@ -79,8 +65,6 @@ if (!class_exists('pdf_context', false)) {
     			return true;
     		}
     	}
-    
-    	// Forcefully read more data into the buffer
     
     	function increase_length($l = 100) {
 			if ($this->_mode == 0 && feof($this->file)) {

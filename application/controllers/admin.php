@@ -79,12 +79,12 @@ public function __construct()
     }
 function _zapiszupo($id_upo,$od,$do,$idprac,$miejsce)
 	{
+		
 	$q = $this->Upo_model->upo_pobierz((int)$id_upo);
 	if($q->num_rows() > 0)
 	{
 		$row = $q->row();
 		$zaklad = $row->id_zaklad;
-		$pracownik = $row->id_prac;
 	}
 	$id_slownik = $this->Slowniki_model->nazwa_slownik_id("slowniki_miejsca");
 	$q = $this->Slowniki_model->sprawdz_pozycje($id_slownik,$miejsce,$zaklad);
@@ -98,7 +98,7 @@ function _zapiszupo($id_upo,$od,$do,$idprac,$miejsce)
 		}
 			
  			
-		$this->Upo_model->upo_zapisz((int)$id_upo,$pracownik,$od,$do,$id_miejsce);
+		$this->Upo_model->upo_zapisz((int)$id_upo,$idprac,$od,$do,$id_miejsce);
  		
 		$q = $this->Slowniki_model->pobierz_slownik_id_sort("slowniki_systemy",$zaklad);
 		$baza = "systemy";
@@ -226,6 +226,7 @@ public function index()
 			$this->load->view("admin_index",$data);	
 			$this->load->view("motyw_new");	
 	}
+	
 public function upo_edytuj()
 	{
 		function check_options($v,$id,$zbior)
@@ -242,29 +243,49 @@ public function upo_edytuj()
 		
 	if(is_numeric($this->uri->segment(3)))
 	{
-		$q = $this->Upo_model->Upo_edytuj($this->uri->segment(3),$this->session->userdata("zaklad"));
-		if($q->num_rows() < 1)
-		{
-			$this->session->set_flashdata("error","Wystąpił błąd - błędny numer upoważnienia lub brak dostępu!");
-			redirect('/admin/upo', 'refresh');
-		}
-		$this->form_validation->set_rules('name', 'Pracownik', '');
+		$q = $this->Upo_model->Upo_edytuj_spr($this->uri->segment(3),$this->session->userdata("zaklad"));
+			if($q->num_rows() < 1)
+			{
+				$this->session->set_flashdata("error","Wystąpił błąd - błędny numer upoważnienia lub brak dostępu!");
+				redirect('/admin/upo', 'refresh');
+			}
+		$row = $q->row();
 		
-		if ($this->form_validation->run() === FALSE)
+		if($row->id_prac !=0){
+			$q = $this->Upo_model->Upo_edytuj($this->uri->segment(3),$this->session->userdata("zaklad"));
+		}else{
+			$q = $this->Upo_model->upo_edytuj_puste($this->uri->segment(3),$this->session->userdata("zaklad"));
+			$row = $q->row();
+			$data["id_zakladu"] = $row->id_zaklad;
+		}
+		
+		
+		$this->form_validation->set_rules('pracownik', 'Pracownik', 'required');
+		
+		if ($this->form_validation->run() == FALSE)
 		{
 		$data["row"] = $q->row_array();
+		
+		if (isset($data["row"]["miejsce"]))
 		$data["miejsce"] = $data["row"]["miejsce"];
 		$data["uid"] = $data["row"]["uid"];
 			
-			
+	
+	if(isset($data["row"]["id_prac"])){
+	
 	$q = $this->Pracownicy_model->pobierz_pracownik_id($data["row"]["id_prac"]);
 	$row = $q->row();
 	$data["id_zakladu"] = $row->id_zakladu;
 	$data["id_prac"] = $row->id;
 	$data['nazwisko_imie'] = $row->nazwiskoimie;
+	}
+	
 	
 	$q = $this->Slowniki_model->pobierz_slownik("slowniki_miejsca",$data["id_zakladu"]);
-	$data["komorki"] = $q->result_array();	  
+	$data["komorki"] = $q->result_array();	
+
+	$q = $this->Pracownicy_model->spis_pracownikow($data["id_zakladu"]);
+	$data["pracownicy_w"]= $q->result_array();
 		
 	$q = $this->Upo_model->upo_pobierz_upowaznienia("systemy",$data["uid"]);
 	foreach($q->result() as $row)
@@ -294,8 +315,6 @@ $q = $this->Upo_model->upo_pobierz_upowaznienia("zbiory",$data["uid"]);
 						$data["zb"][$row->id_zbior] = $row->zakres;
 					}		
 					
-// if($this->session->userdata('typ') == md5(2))
-// 	{
 	$q = $this->Slowniki_model->pobierz_slownik_id_sort("slowniki_zbiory",$data["id_zakladu"]);	
 		foreach($q->result() as $row)
 						{
@@ -309,7 +328,6 @@ $q = $this->Upo_model->upo_pobierz_upowaznienia("zbiory",$data["uid"]);
 									"A" => check_options('A',$row->id,@$data["zb"])
 								);							
 						}
-						//}
 
 			
 			$this->load->view('head',$data_head);
@@ -324,6 +342,11 @@ $q = $this->Upo_model->upo_pobierz_upowaznienia("zbiory",$data["uid"]);
 						$this->load->view("motyw_new");
 	}
 }
+
+
+
+
+
 public function upo()
 		{					
          $data["perm"] = check_perm($this->session->userdata("id"),$this->uri->segment(2));
@@ -356,24 +379,28 @@ public function upo()
 				
 				redirect('/admin/upo', 'refresh');
 			}
-			if($this->uri->segment(3) == "usun" && is_numeric($this->uri->segment(4)))
+			if($this->uri->segment(3) == "upo_wyczysc" && is_numeric($this->uri->segment(4)))
 			{
 				if($data["perm"] == 2)
 				{
-				$this->Upo_model->usun_upo((int)$this->uri->segment(4));
-				$this->session->set_flashdata("msg","Usunięto upoważnienie!");
+				$this->Upo_model->upo_zapisz((int)$this->uri->segment(4), null, null, null, null);
+				$this->Slowniki_model->usun_wszystko((int)$this->uri->segment(4),'upowaznienia_systemy');
+				$this->Slowniki_model->usun_wszystko((int)$this->uri->segment(4),'upowaznienia_zbiory');
+				
+				$this->session->set_flashdata("msg","Wyczyszczono upoważnienie!");
+				redirect('/admin/upo', 'refresh');
 				}
 				else
 					$this->session->set_flashdata("error","Brak dostępu!");
+					redirect('/admin/upo', 'refresh');
 
-				//redirect('/admin/upo', 'refresh');
 			}
 			if($this->uri->segment(3) == "clean")
 			{
 				$sesja = array(
 					"name" 		=> '',
 					"sort"		=> '',
-					"sortid"		=> '',
+					"sortid"	=> '',
 					"aktualne"  => ''
 				);
 				$this->session->set_flashdata("msg","Zresetowano wyszukiwanie!");
@@ -393,7 +420,7 @@ public function upo()
 					$sesja = array(
 						"name" 		=> $this->input->post("name"),
 						"sort"		=> $this->input->post("sort"),
-						"sortid"		=> $this->input->post("sortid"),
+						"sortid"	=> $this->input->post("sortid"),
 						"aktualne"  => $this->input->post("aktualne")
 					);
 					
@@ -426,28 +453,40 @@ public function upo()
 					$opcja["aktualne"] = 1;
 					$data["aktualne"] = 1;
 				}
+				
+				$puste=0;
+				if($this->input->post("puste") == "tak" or $this->session->userdata("puste") == "tak"){
+					
+					$puste=1;
+
+					
+				}
+				
+				
 				if($this->session->userdata("name") !== FALSE)
 				{
 					$data["name"]	 	= $this->session->userdata("name");
 					$data["sort"]	 	= $this->session->userdata("sort");
-					$data["sortid"]	= $this->session->userdata("sortid");
-					$data["aktualne"] = $this->session->userdata("aktualne");
+					$data["sortid"]	    = $this->session->userdata("sortid");
+					$data["aktualne"]   = $this->session->userdata("aktualne");
+					$data['puste']      = $this->session->userdata("puste");
 				}
 				$data["name"] = $name;
-
-			$this->load->view("upo/upo_wyszukaj",$data);	
-				
+			
 			if($data["perm"] == 2)
 			{
 			$q = $this->Zaklady_model->spis_zakladow($this->session->userdata("zaklad"));
 			$data["row"] = $q->result_array();
 			$this->load->view("upo/upo_zaklady",$data);		
 			}
+			
+			$this->load->view("upo/upo_wyszukaj",$data);	
+				
 		
 			$this->load->library('form_validation');
 			$this->form_validation->set_rules('name', 'Pracownik', '');
 			
-			
+			 
 			
 		if ($this->form_validation->run() !== FALSE or $this->session->userdata("name") !== FALSE or $this->uri->segment(3) == "wygasajace")
 					{
@@ -460,18 +499,36 @@ public function upo()
 						{
 								$od = 0;
 						}
-		if($this->uri->segment(3) == "wygasajace")
-		{
-			$q = $this->Upo_model->suma_upo_nazwisko($name,$this->session->userdata("zaklad"),$opcja,1);			
-		}
-		else
-		{
-			$q = $this->Upo_model->suma_upo_nazwisko($name,$this->session->userdata("zaklad"),$opcja);			
+						
+						
+		
+		If ($puste == 1){
+			
+			$q= $this->Upo_model->suma_puste($this->session->userdata("zaklad"));
+			
+			
+		}else{
+		
+			if($this->uri->segment(3) == "wygasajace")
+			{
+				$q = $this->Upo_model->suma_upo_nazwisko($name,$this->session->userdata("zaklad"),$opcja,1);			
+			}
+			else
+			{
+				$q = $this->Upo_model->suma_upo_nazwisko($name,$this->session->userdata("zaklad"),$opcja);			
+			}
 		}
 		$data["wyszukiwanie"] = $name;			
 		if($q > 0)
 				{
 					$suma = $q;
+					
+					
+						if($puste == 1){
+							
+							$q = $this->Upo_model->upo_puste($this->session->userdata("zaklad"),$od,$ile);	
+							
+						}else{
 							if($this->uri->segment(3) == "wygasajace")
 							{
 								$q = $this->Upo_model->upo_nazwisko($name,$this->session->userdata("zaklad"),$opcja,$od,$ile,1);	
@@ -480,16 +537,18 @@ public function upo()
 							{
 								$q = $this->Upo_model->upo_nazwisko($name,$this->session->userdata("zaklad"),$opcja,$od,$ile);	
 							}
+						}
 				
-					$this->load->library('pagination');
-					$config['base_url'] = $this->config->item("pag_suffix").'/index.php/admin/upo/';
+					$this->load->library('Ajax_pagination');
+					//$config['base_url'] = $this->config->item("pag_suffix").'/index.php/admin/upo/';
+					$config['base_url']= site_url('admin/upo/');
 					$config['total_rows'] = $suma;
 					$config['per_page'] = $ile; 
 					$config['full_tag_open'] = '<ul class="pagination">';
 					$config['full_tag_close'] = '</ul>';
-					$this->pagination->initialize($config); 
+					$this->ajax_pagination->initialize($config);
 					
-					$data["pagination"] = $this->pagination->create_links();		
+					$data["pagination"] = $this->ajax_pagination->create_links();		
 					$data["i"] = 0;
 					$data["suma"] = $suma;
 					$data["tydzien"] = date("Y-m-d",strtotime("+2 week 1 day"));
@@ -544,7 +603,6 @@ function upo_nowe()
 					{
 					$this->form_validation->set_rules('od', 'Data od', 'required|exact_length[10]');
 					$this->form_validation->set_rules('do', 'Data do', 'required|exact_length[10]');
-					//$this->form_validation->set_rules('miejsce', 'Komórka organizacyjna','required');
 					
 					if ($this->form_validation->run() == FALSE)
 					{
